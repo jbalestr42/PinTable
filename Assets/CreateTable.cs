@@ -36,18 +36,20 @@ public class CreateTable : MonoBehaviour {
     }
 
     void CreateCube(List<Vector3> p_vertices, List<Color> p_colors, List<int> p_triangles, List<Vector2> p_uvs, int p_x, int p_y) {
+        Vector3 pivot = new Vector3(_width * _size + (_width - 1) * _offset, 0f, _height * _size + (_height - 1) * _offset) / 2.0f;
+
         float half = _size / 2f;
         Vector3 origin = new Vector3(p_x * (_size + _offset), half, p_y * (_size + _offset));
         int index = p_vertices.Count;
 
-        p_vertices.Add(origin + new Vector3(-half, -half, -half));
-        p_vertices.Add(origin + new Vector3(half, -half, -half));
-        p_vertices.Add(origin + new Vector3(half, half, -half));
-        p_vertices.Add(origin + new Vector3(-half, half, -half));
-        p_vertices.Add(origin + new Vector3(-half, half, half));
-        p_vertices.Add(origin + new Vector3(half, half, half));
-        p_vertices.Add(origin + new Vector3(half, -half, half));
-        p_vertices.Add(origin + new Vector3(-half, -half, half));
+        p_vertices.Add(origin - pivot + new Vector3(-half, -half, -half));
+        p_vertices.Add(origin - pivot + new Vector3(half, -half, -half));
+        p_vertices.Add(origin - pivot + new Vector3(half, half, -half));
+        p_vertices.Add(origin - pivot + new Vector3(-half, half, -half));
+        p_vertices.Add(origin - pivot + new Vector3(-half, half, half));
+        p_vertices.Add(origin - pivot + new Vector3(half, half, half));
+        p_vertices.Add(origin - pivot + new Vector3(half, -half, half));
+        p_vertices.Add(origin - pivot + new Vector3(-half, -half, half));
 
         p_colors.Add(Color.black);
         p_colors.Add(Color.black);
@@ -68,21 +70,6 @@ public class CreateTable : MonoBehaviour {
         CreateQuad(p_triangles, index, index + 3, index + 4, index + 7); // left
         CreateQuad(p_triangles, index + 5, index + 6, index + 7, index + 4); // back
         CreateQuad(p_triangles, index, index + 7, index + 6, index + 1); // bottom
-        /*
-        p_triangles[]
-
-            0, 2, 1, //face front
-			0, 3, 2,
-			2, 3, 4, //face top
-			2, 4, 5,
-			1, 2, 5, //face right
-			1, 5, 6,
-			0, 7, 4, //face left
-			0, 4, 3,
-			5, 4, 7, //face back
-			5, 7, 6,
-			0, 6, 7, //face bottom
-			0, 1, 6*/
     }
 
     void CreateQuad(List<int> p_triangles, int p_index0, int p_index1, int p_index2, int p_index3) {
