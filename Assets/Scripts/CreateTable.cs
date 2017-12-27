@@ -8,6 +8,7 @@ public class CreateTable : MonoBehaviour {
     public float _size;
     public float _offset;
     public Material _pintableMat;
+    public Camera _camera;
 
     void Start()
     {
@@ -18,6 +19,7 @@ public class CreateTable : MonoBehaviour {
             meshCount *= 2;
         }
 
+        Bounds bounds = new Bounds();
         for (int i = 0; i < meshCount; i++) {
             for (int j = 0; j < meshCount; j++) {
                 GameObject go = new GameObject();
@@ -47,13 +49,16 @@ public class CreateTable : MonoBehaviour {
                 subMesh.RecalculateNormals();
                 subMesh.name = go.name;
                 renderer.material = _pintableMat;
-                filter.mesh = subMesh;  
+                filter.mesh = subMesh;
+
+                bounds.Encapsulate(subMesh.bounds.min);
+                bounds.Encapsulate(subMesh.bounds.max);
             }
         }
 
-        //Camera camera = GetComponentInChildren<Camera>();
-        //camera.transform.localPosition = new Vector3(mesh.bounds.center.x, 10.0f, mesh.bounds.center.z);
-        //camera.orthographicSize = mesh.bounds.size.z < mesh.bounds.size.x ? mesh.bounds.size.x / 2.0f : mesh.bounds.size.z / 2.0f;
+        Debug.Log(_camera + " = " + bounds);
+        _camera.transform.localPosition = new Vector3(bounds.center.x, 10.0f, bounds.center.z);
+        _camera.orthographicSize = bounds.size.z < bounds.size.x ? bounds.size.x / 2.0f : bounds.size.z / 2.0f;
     }
 
     void CreateCube(List<Vector3> p_vertices, List<Color> p_colors, List<int> p_triangles, List<Vector2> p_uvs, int p_x, int p_y) {
