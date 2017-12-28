@@ -8,7 +8,6 @@ public class CreateTable : MonoBehaviour {
     public float _size;
     public float _offset;
     public Material _pintableMat;
-    public Camera _camera;
 
     void Start()
     {
@@ -19,13 +18,15 @@ public class CreateTable : MonoBehaviour {
             meshCount *= 2;
         }
 
-        Bounds bounds = new Bounds();
+        GameObject chunks = new GameObject();
+        chunks.name = "PinTableChunks";
+        chunks.transform.SetParent(transform);
         for (int i = 0; i < meshCount; i++) {
             for (int j = 0; j < meshCount; j++) {
                 GameObject go = new GameObject();
-                go.transform.SetParent(transform, false);
+                go.transform.SetParent(chunks.transform, false);
                 go.isStatic = true;
-                go.name = "PinTable_Chunk_" + i + "_" + j;
+                go.name = "Chunk_" + i + "_" + j;
                 Mesh subMesh = new Mesh();
                 MeshFilter filter = go.AddComponent<MeshFilter>();
                 MeshRenderer renderer = go.AddComponent<MeshRenderer>();
@@ -50,15 +51,8 @@ public class CreateTable : MonoBehaviour {
                 subMesh.name = go.name;
                 renderer.material = _pintableMat;
                 filter.mesh = subMesh;
-
-                bounds.Encapsulate(subMesh.bounds.min);
-                bounds.Encapsulate(subMesh.bounds.max);
             }
         }
-
-        Debug.Log(_camera + " = " + bounds);
-        _camera.transform.localPosition = new Vector3(bounds.center.x, 10.0f, bounds.center.z);
-        _camera.orthographicSize = bounds.size.z < bounds.size.x ? bounds.size.x / 2.0f : bounds.size.z / 2.0f;
     }
 
     void CreateCube(List<Vector3> p_vertices, List<Color> p_colors, List<int> p_triangles, List<Vector2> p_uvs, int p_x, int p_y) {
