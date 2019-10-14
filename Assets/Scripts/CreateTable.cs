@@ -6,10 +6,17 @@ using UnityEngine;
 /// </summary>
 public class CreateTable : MonoBehaviour
 {
-    public int _tableSize;
-    public float _pinSize;
-    public float _spaceBetweenPin;
-    public Material _pintableMat;
+    [SerializeField]
+    private int _tableSize;
+
+    [SerializeField]
+    private float _pinSize;
+
+    [SerializeField]
+    private float _spaceBetweenPin;
+
+    [SerializeField]
+    private Material _pintableMat;
 
     void Start()
     {
@@ -117,5 +124,10 @@ public class CreateTable : MonoBehaviour
         p_triangles.Add(p_index0);
         p_triangles.Add(p_index3);
         p_triangles.Add(p_index2);
+    }
+
+    public Material PintableMat
+    {
+        get { return _pintableMat; }
     }
 }

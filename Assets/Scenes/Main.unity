@@ -1407,8 +1407,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92cfc89e4366778448bc1b108127ca86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerTexture: {fileID: 8400000, guid: 4e62b9f9674d5b54b8b7c273c1765e2d, type: 2}
-  _noiseTexture: {fileID: 8400000, guid: 0ea3388fc260aac4a993b8cf0f307e1a, type: 2}
+  _transitions:
+  - Texture: {fileID: 8400000, guid: 0ea3388fc260aac4a993b8cf0f307e1a, type: 2}
+    TransitionType: 0
+    TransitionDuration: 2
+  - Texture: {fileID: 8400000, guid: 4e62b9f9674d5b54b8b7c273c1765e2d, type: 2}
+    TransitionType: 1
+    TransitionDuration: 1
 --- !u!4 &1274231717
 Transform:
   m_ObjectHideFlags: 0

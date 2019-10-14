@@ -1,26 +1,69 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class ExampleTransition : MonoBehaviour
 {
-    public Texture _playerTexture;
-    public Texture _noiseTexture;
+    [System.Serializable]
+    public struct TransitionData
+    {
+        public RenderTexture Texture;
+        public TransitionManager.ETransitionType TransitionType;
+        public float TransitionDuration;
+
+        public TransitionData(RenderTexture p_texture, TransitionManager.ETransitionType p_type, float p_duration)
+        {
+            Texture = p_texture;
+            TransitionType = p_type;
+            TransitionDuration = p_duration;
+        }
+    }
+
+    public List<TransitionData> _transitions;
 
     TransitionManager _transitionManager;
+    int _currentIndex = 0;
+    bool _isInitialized = false;
 
     void Start()
     {
         _transitionManager = GameObject.FindObjectOfType<TransitionManager>();
+        if (_transitions.Count == 0)
+        {
+            Debug.LogError("There is no transition.");
+        }
+        else
+        {
+            _isInitialized = true;
+        }
 	}
 	
 	void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (_isInitialized && !_transitionManager.IsTransitionInProgress())
         {
-            _transitionManager.CreateTransition(TransitionManager.ETransitionType.Horizontal, _noiseTexture, 2.0f);
+            if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                _currentIndex--;
+                if (_currentIndex < 0)
+                {
+                    _currentIndex = _transitions.Count - 1;
+                }
+                CreateTransition(_transitions[_currentIndex]);
+            }
+            else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                _currentIndex++;
+                if (_currentIndex >= _transitions.Count)
+                {
+                    _currentIndex = 0;
+                }
+                CreateTransition(_transitions[_currentIndex]);
+            }
         }
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            _transitionManager.CreateTransition(TransitionManager.ETransitionType.Circle, _playerTexture, 1.0f);
-        }
+    }
+
+    void CreateTransition(TransitionData p_data)
+    {
+        _transitionManager.CreateTransition(p_data.TransitionType, p_data.Texture, p_data.TransitionDuration);
     }
 }

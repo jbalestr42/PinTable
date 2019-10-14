@@ -21,8 +21,8 @@ public class TransitionManager : MonoBehaviour
 	void Start()
     {
         _table = GetComponentInParent<CreateTable>();
-        _table._pintableMat.SetTexture(mainTexID, null);
-        _table._pintableMat.SetTexture(nextTexID, null);
+        _table.PintableMat.SetTexture(mainTexID, null);
+        _table.PintableMat.SetTexture(nextTexID, null);
     }
 
     /// <summary>
@@ -30,8 +30,8 @@ public class TransitionManager : MonoBehaviour
     /// </summary>
     public void EndTransition()
     {
-        _table._pintableMat.SetTexture(mainTexID, _lastTexture);
-        _table._pintableMat.SetTexture(nextTexID, null);
+        _table.PintableMat.SetTexture(mainTexID, _lastTexture);
+        _table.PintableMat.SetTexture(nextTexID, null);
         _isInTransition = false;
     }
 
@@ -66,9 +66,14 @@ public class TransitionManager : MonoBehaviour
             {
                 transition.transform.SetParent(transform, false);
                 transition.GetComponent<ATableTransition>().Duration = p_duration;
-                _table._pintableMat.SetTexture(nextTexID, p_texture);
+                _table.PintableMat.SetTexture(nextTexID, p_texture);
                 _lastTexture = p_texture;
             }
         }
+    }
+
+    public bool IsTransitionInProgress()
+    {
+        return _isInTransition;
     }
 }
