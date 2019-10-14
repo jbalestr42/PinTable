@@ -1,22 +1,28 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// Manage transiton, allow to add a new transiton to a different texture
 /// </summary>
 public class PinTableTransitionManager : MonoBehaviour
 {
-    readonly int MainTexID = Shader.PropertyToID("_MainTex");
     readonly int NextTexID = Shader.PropertyToID("_NextTex");
+    readonly int CurrentTexID = Shader.PropertyToID("_CurrentTex");
+    
+    public UnityEvent OnTransitionStartEvent;
+    public UnityEvent OnTransitionEndEvent;
 
-    CreateTable _table = null;
-    Texture _lastTexture = null;
-    bool _isInTransition = false;
+    private CreateTable _table = null;
+    private Texture _lastTexture = null;
+    private bool _isInTransition = false;
 
 	void Start()
     {
         _table = GetComponentInParent<CreateTable>();
-        _table.PintableMat.SetTexture(MainTexID, null);
         _table.PintableMat.SetTexture(NextTexID, null);
+        _table.PintableMat.SetTexture(CurrentTexID, null);
+        OnTransitionStartEvent = new UnityEvent();
+        OnTransitionEndEvent = new UnityEvent();
     }
 
     /// <summary>
@@ -24,9 +30,10 @@ public class PinTableTransitionManager : MonoBehaviour
     /// </summary>
     public void EndTransition()
     {
-        _table.PintableMat.SetTexture(MainTexID, _lastTexture);
-        _table.PintableMat.SetTexture(NextTexID, null);
+        _table.PintableMat.SetTexture(NextTexID, _lastTexture);
+        _table.PintableMat.SetTexture(CurrentTexID, null);
         _isInTransition = false;
+        OnTransitionEndEvent.Invoke();
     }
 
     /// <summary>
@@ -46,8 +53,9 @@ public class PinTableTransitionManager : MonoBehaviour
             {
                 transition.transform.SetParent(transform, false);
                 transition.GetComponent<APinTableTransition>().Duration = p_duration;
-                _table.PintableMat.SetTexture(NextTexID, p_texture);
+                _table.PintableMat.SetTexture(CurrentTexID, p_texture);
                 _lastTexture = p_texture;
+                OnTransitionStartEvent.Invoke();
             }
         }
     }
@@ -58,5 +66,21 @@ public class PinTableTransitionManager : MonoBehaviour
     public bool IsTransitionInProgress()
     {
         return _isInTransition;
+    }
+    
+    /// <summary>
+    /// Return The current texture
+    /// </summary>
+    public Texture GetCurrentTexture()
+    {
+        return _table.PintableMat.GetTexture(CurrentTexID);
+    }
+    
+    /// <summary>
+    /// Return the texture we are trqnsitioning to
+    /// </summary>
+    public Texture GetNextTexture()
+    {
+        return _table.PintableMat.GetTexture(NextTexID);
     }
 }

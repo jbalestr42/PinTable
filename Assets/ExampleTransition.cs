@@ -20,9 +20,19 @@ public class ExampleTransition : MonoBehaviour
 
     public List<TransitionData> _transitions;
 
+    [SerializeField]
+    public UnityEngine.UI.RawImage _debugCurrentImage;
+
+    [SerializeField]
+    public UnityEngine.UI.RawImage _debugNextImage;
+
+    [SerializeField]
+    public GameObject _debugUI;
+
     PinTableTransitionManager _transitionManager;
     int _currentIndex = 0;
     bool _isInitialized = false;
+    bool _showDebug = false;
 
     void Start()
     {
@@ -35,6 +45,9 @@ public class ExampleTransition : MonoBehaviour
         {
             _isInitialized = true;
         }
+
+        _transitionManager.OnTransitionStartEvent.AddListener(OnTransitionStart);
+        _transitionManager.OnTransitionEndEvent.AddListener(OnTransitionEnd);
 	}
 	
 	void Update()
@@ -60,10 +73,28 @@ public class ExampleTransition : MonoBehaviour
                 CreateTransition(_transitions[_currentIndex]);
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            _showDebug = !_showDebug;
+            _debugUI.SetActive(_showDebug);
+        }
     }
 
     void CreateTransition(TransitionData p_data)
     {
         _transitionManager.CreateTransition(p_data.Prefab, p_data.Texture, p_data.Duration);
+    }
+    
+    void OnTransitionStart()
+    {
+        _debugNextImage.texture = _transitionManager.GetNextTexture();
+        _debugCurrentImage.texture = _transitionManager.GetCurrentTexture();
+    }
+
+    void OnTransitionEnd()
+    {
+        _debugNextImage.texture = _transitionManager.GetNextTexture();
+        _debugCurrentImage.texture = _transitionManager.GetCurrentTexture();
     }
 }

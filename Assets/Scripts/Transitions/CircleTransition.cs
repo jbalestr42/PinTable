@@ -13,6 +13,6 @@ public class CircleTransition : APinTableTransition
 
     public override void UpdateTransition(float p_percent)
     {
-        _material.SetFloat(ScaleID, Mathf.Lerp(8.0f, 0.5f, p_percent));
+        _material.SetFloat(ScaleID, Mathf.Lerp(10.0f, 0f, p_percent));
     }
 }
