@@ -1409,11 +1409,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _transitions:
   - Texture: {fileID: 8400000, guid: 0ea3388fc260aac4a993b8cf0f307e1a, type: 2}
-    TransitionType: 0
-    TransitionDuration: 2
+    Prefab: {fileID: 1891791709503790, guid: 8d9c0906f98a2184fbec67c3ad1ed71e, type: 3}
+    Duration: 2
   - Texture: {fileID: 8400000, guid: 4e62b9f9674d5b54b8b7c273c1765e2d, type: 2}
-    TransitionType: 1
-    TransitionDuration: 1
+    Prefab: {fileID: 1891791709503790, guid: f07fac505eb05c34f83e9857e7fbb105, type: 3}
+    Duration: 1
 --- !u!4 &1274231717
 Transform:
   m_ObjectHideFlags: 0

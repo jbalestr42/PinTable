@@ -5,14 +5,13 @@ using UnityEngine;
 /// Base class to implement a custom transition
 /// The duration is set by the TransitonManager when we add a new transition
 /// </summary>
-public abstract class ATableTransition : MonoBehaviour
+public abstract class APinTableTransition : MonoBehaviour
 {
-    float _transitionTimer;
-    float _duration = 3.0f;
+    private float _transitionTimer = 0.0f;
+    private float _duration = 3.0f;
 
     void Start()
     {
-        _transitionTimer = 0.0f;
         StartTransition();
         StartCoroutine(UpdateTransitionTimer());
     }
@@ -25,7 +24,7 @@ public abstract class ATableTransition : MonoBehaviour
             UpdateTransition(Mathf.Clamp(_transitionTimer / _duration, 0.0f, 1.0f));
             yield return new WaitForEndOfFrame();
         }
-        GetComponentInParent<TransitionManager>().EndTransition();
+        GetComponentInParent<PinTableTransitionManager>().EndTransition();
         Destroy(gameObject);
     }
 

@@ -7,26 +7,26 @@ public class ExampleTransition : MonoBehaviour
     public struct TransitionData
     {
         public RenderTexture Texture;
-        public TransitionManager.ETransitionType TransitionType;
-        public float TransitionDuration;
+        public GameObject Prefab;
+        public float Duration;
 
-        public TransitionData(RenderTexture p_texture, TransitionManager.ETransitionType p_type, float p_duration)
+        public TransitionData(RenderTexture p_texture, GameObject p_prefab, float p_duration)
         {
             Texture = p_texture;
-            TransitionType = p_type;
-            TransitionDuration = p_duration;
+            Prefab = p_prefab;
+            Duration = p_duration;
         }
     }
 
     public List<TransitionData> _transitions;
 
-    TransitionManager _transitionManager;
+    PinTableTransitionManager _transitionManager;
     int _currentIndex = 0;
     bool _isInitialized = false;
 
     void Start()
     {
-        _transitionManager = GameObject.FindObjectOfType<TransitionManager>();
+        _transitionManager = GameObject.FindObjectOfType<PinTableTransitionManager>();
         if (_transitions.Count == 0)
         {
             Debug.LogError("There is no transition.");
@@ -64,6 +64,6 @@ public class ExampleTransition : MonoBehaviour
 
     void CreateTransition(TransitionData p_data)
     {
-        _transitionManager.CreateTransition(p_data.TransitionType, p_data.Texture, p_data.TransitionDuration);
+        _transitionManager.CreateTransition(p_data.Prefab, p_data.Texture, p_data.Duration);
     }
 }

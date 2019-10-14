@@ -10,11 +10,8 @@ public class PlayerMovement : MonoBehaviour
         _direction = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0f).normalized;
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        var x = Input.GetAxis("Horizontal") * Time.deltaTime * _speed;
-        var z = Input.GetAxis("Vertical") * Time.deltaTime * _speed;
-
         transform.Translate(_direction * Time.deltaTime * _speed);
     }
 
@@ -22,11 +19,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (p_collision.gameObject.tag == "WallX")
         {
-            _direction = new Vector3(-_direction.x, _direction.y, 0f);
+            _direction.x = -_direction.x;
         }
         if (p_collision.gameObject.tag == "WallY")
         {
-            _direction = new Vector3(_direction.x, -_direction.y, 0f);
+            _direction.y = -_direction.y;
         }
     }
 }
