@@ -14,7 +14,8 @@
 		CGPROGRAM
 		#pragma surface surf Standard vertex:vert
 
-		struct Input {
+		struct Input
+		{
 			float2 uv_MainTex;
 			fixed4 color;
 		};
@@ -24,7 +25,8 @@
 		sampler2D _TransitionTex;
 		float _DisplacementFactor;
 
-		void vert(inout appdata_full v, out Input data) {
+		void vert(inout appdata_full v, out Input data)
+		{
 			UNITY_INITIALIZE_OUTPUT(Input, data);
 			float2 uv = v.texcoord;
 			float transition = tex2Dlod(_TransitionTex, float4(uv, 0, 0)).r;
@@ -32,7 +34,8 @@
 			data.color = v.color;
 		}
 
-		void surf(Input IN, inout SurfaceOutputStandard o) {
+		void surf(Input IN, inout SurfaceOutputStandard o)
+		{
 			o.Albedo = lerp(tex2D(_MainTex, IN.uv_MainTex), tex2D(_NextTex, IN.uv_MainTex), tex2D(_TransitionTex, IN.uv_MainTex).r) * IN.color.r;
 		}
 		ENDCG
