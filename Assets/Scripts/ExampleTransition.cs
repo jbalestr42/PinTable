@@ -28,23 +28,16 @@ public class ExampleTransition : MonoBehaviour
 
     [SerializeField]
     public GameObject _debugUI;
+    
+    [SerializeField]
+    public GameObject _controlUI;
 
     PinTableTransitionManager _transitionManager;
     int _currentIndex = 0;
-    bool _isInitialized = false;
-    bool _showDebug = false;
 
     void Start()
     {
         _transitionManager = GameObject.FindObjectOfType<PinTableTransitionManager>();
-        if (_transitions.Count == 0)
-        {
-            Debug.LogError("There is no transition.");
-        }
-        else
-        {
-            _isInitialized = true;
-        }
 
         _transitionManager.OnTransitionStartEvent.AddListener(OnTransitionStart);
         _transitionManager.OnTransitionEndEvent.AddListener(OnTransitionEnd);
@@ -52,7 +45,7 @@ public class ExampleTransition : MonoBehaviour
 	
 	void Update()
     {
-        if (_isInitialized && !_transitionManager.IsTransitionInProgress())
+        if (!_transitionManager.IsTransitionInProgress())
         {
             if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
@@ -76,8 +69,12 @@ public class ExampleTransition : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.G))
         {
-            _showDebug = !_showDebug;
-            _debugUI.SetActive(_showDebug);
+            _debugUI.SetActive(!_debugUI.activeInHierarchy);
+        }
+
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            _controlUI.SetActive(!_controlUI.activeInHierarchy);
         }
     }
 
