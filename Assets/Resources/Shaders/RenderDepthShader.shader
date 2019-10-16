@@ -50,6 +50,7 @@
 				//convert the vertex positions from object space to clip space so they can be rendered
 				o.position = UnityObjectToClipPos(v.vertex);
 				o.uv = v.uv;
+
 				return o;
 			}
 
@@ -57,8 +58,11 @@
 			fixed4 frag(v2f i) : SV_TARGET
 			{
 				//get depth from depth texture
-				float depth = tex2D(_CameraDepthTexture, i.uv).r * _Factor;
-				return depth;
+				float depth = tex2D(_CameraDepthTexture, i.uv).r;
+				#if !defined(UNITY_REVERSED_Z)
+				depth = 1.0f - depth;
+				#endif
+				return depth * _Factor;
 			}
 			ENDCG
 		}
